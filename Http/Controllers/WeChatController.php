@@ -16,7 +16,7 @@ class WeChatController extends Controller
     {
         Log::info('wechat request arrived.');
 
-        $server = $service->getWorkApp()->getServer();
+        $server = $service->workApp()->getServer();
 
         $server->with(function ($message) {
             return "";
@@ -28,7 +28,7 @@ class WeChatController extends Controller
     public function workRedirect(WeChatService $service)
     {
         Log::info('wechat work redirect.');
-        $redirect_url = $service->getWorkApp()->getOAuth()->redirect(route('wechat.work.login'));
+        $redirect_url = $service->workApp()->getOAuth()->redirect(route('wechat.work.login'));
         return response()->redirectTo($redirect_url);
     }
 }

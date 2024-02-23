@@ -21,7 +21,7 @@ class WeChatService extends BaseService
     /**
      * @return \EasyWeChat\OfficialAccount\Application
      */
-    public function getOfficialApp(): \EasyWeChat\OfficialAccount\Application
+    public function officialApp(): \EasyWeChat\OfficialAccount\Application
     {
         return app('easywechat.official_account');
     }
@@ -30,7 +30,7 @@ class WeChatService extends BaseService
     /**
      * @return \EasyWeChat\Work\Application
      */
-    public function getWorkApp(): \EasyWeChat\Work\Application
+    public function workApp(): \EasyWeChat\Work\Application
     {
         return app('easywechat.work');
     }
@@ -39,7 +39,7 @@ class WeChatService extends BaseService
     /**
      * @return \EasyWeChat\MiniApp\Application
      */
-    public function getMiniProgram(): \EasyWeChat\MiniApp\Application
+    public function weappApp(): \EasyWeChat\MiniApp\Application
     {
         /**
          * @var \EasyWeChat\MiniApp\Application
@@ -51,7 +51,7 @@ class WeChatService extends BaseService
     /**
      * @return Application
      */
-    public function getPaymentApp(): Application
+    public function paymentApp(): Application
     {
         /**
          * @var Application $app
@@ -64,14 +64,14 @@ class WeChatService extends BaseService
      * 获取企业号登录用户信息
      * @return array
      */
-    public function getWorkUser(): array
+    public function workUser(): array
     {
 
         if (!$code = request('code')) {
             return [null, '无法获得企业微信授权码'];
         }
 
-        $user = $this->getWorkApp()->getOAuth()->detailed()->userFromCode($code);
+        $user = $this->workApp()->getOAuth()->detailed()->userFromCode($code);
 
         return [$user, null];
     }
@@ -86,7 +86,7 @@ class WeChatService extends BaseService
      */
     public function orderCreate(array $params = []): array
     {
-        $api = $this->getPaymentApp()->getClient();
+        $api = $this->paymentApp()->getClient();
 
         $resp = $api->postJson('v3/pay/transactions/jsapi', [
             'appid' => config('easywechat.pay.default.app_id'),
@@ -111,7 +111,6 @@ class WeChatService extends BaseService
 
     }
 
-
     /**
      * 查询订单
      * @param string $order_sn
@@ -121,7 +120,7 @@ class WeChatService extends BaseService
      */
     public function orderQuery(string $order_sn): array
     {
-        $api = $this->getPaymentApp()->getClient();
+        $api = $this->paymentApp()->getClient();
 
         $mchid = config('easywechat.pay.default.mch_id');
 
@@ -141,7 +140,7 @@ class WeChatService extends BaseService
     public function orderGetJsPaymentConfig($prepay_id): array
     {
 
-        $app = $this->getPaymentApp();
+        $app = $this->paymentApp();
         $utils = $app->getUtils();
 
         return $utils->buildSdkConfig($prepay_id, config('easywechat.pay.default.app_id'));
@@ -161,7 +160,7 @@ class WeChatService extends BaseService
      */
     public function weappGetPhoneNumber(string $code): array
     {
-        $response = $this->getMiniProgram()->getClient()->postJson('/wxa/business/getuserphonenumber', [
+        $response = $this->weappApp()->getClient()->postJson('/wxa/business/getuserphonenumber', [
             'code' => $code,
         ]);
 
@@ -174,9 +173,7 @@ class WeChatService extends BaseService
         }
     }
 
-
     /**
-     * TODO test
      * 生成小程序码
      * @param $page_url
      * @param array $params
@@ -197,7 +194,7 @@ class WeChatService extends BaseService
         $query = http_build_query($params);
 
         try {
-            $response = $this->getMiniProgram()->getClient()->postJson('/wxa/getwxacode', [
+            $response = $this->weappApp()->getClient()->postJson('/wxa/getwxacode', [
                 'path' => $page_url . ($query ? '?' . $query : ''), //'pages/index/index'
                 'width' => $width,
             ]);
@@ -208,7 +205,7 @@ class WeChatService extends BaseService
             $storage_path = storage_path("app/public/{$file_path}");
             Log::info('storage_path: ' . $storage_path);
             $response->saveAs($storage_path);
-            return [true, $file_path];
+            return [$file_path, null];
         } catch (\Throwable $e) {
             Log::info("generateMiniQrCode::" . $e->getMessage());
             return [false, '生成小程序码失败'];
@@ -226,7 +223,7 @@ class WeChatService extends BaseService
     public function weappGenerateUnlimitedQrCode($page_url, string $scene = 'checkout', int $width = 430): array
     {
         try {
-            $response = $this->getMiniProgram()->getClient()->postJson('/wxa/getwxacodeunlimit', [
+            $response = $this->weappApp()->getClient()->postJson('/wxa/getwxacodeunlimit', [
                 'scene' => $scene,
                 'page' => $page_url, //'pages/index/index'
                 'width' => $width,
@@ -244,7 +241,6 @@ class WeChatService extends BaseService
         }
     }
 
-
     /**
      * 敏感信息检测
      * @param $open_id
@@ -260,7 +256,7 @@ class WeChatService extends BaseService
      */
     public function weappCheckTextSecurity($open_id, $text, int $scene = 1): bool
     {
-        $response = $this->getMiniProgram()->getClient()->postJson('/wxa/msg_sec_check', [
+        $response = $this->weappApp()->getClient()->postJson('/wxa/msg_sec_check', [
             'content' => $text,
             'version' => 2,
             'scene' => $scene,
@@ -276,11 +272,9 @@ class WeChatService extends BaseService
         }
     }
 
-
     /**
-     *
-     * TODO 腾讯服务器为异步检测，需要提供回调
-     * 检测媒体合法性
+     * @todo 检测媒体合法性,
+     * @todo 腾讯服务器为异步检测，需要提供回调
      * @param $open_id
      * @param $media_url
      * @param int $media_type
@@ -295,7 +289,7 @@ class WeChatService extends BaseService
      */
     public function weappCheckMediaSecurity($open_id, $media_url, int $media_type = 1, int $scene = 1): bool
     {
-        $response = $this->getMiniProgram()->getClient()->postJson('/wxa/media_check_async', [
+        $response = $this->weappApp()->getClient()->postJson('/wxa/media_check_async', [
             'media_url' => $media_url,
             'media_type' => $media_type,
             'version' => 2,
@@ -338,7 +332,7 @@ class WeChatService extends BaseService
                 }
             }
 
-            $response = $this->getWorkApp()->getClient()->postJson('cgi-bin/message/send', [
+            $response = $this->workApp()->getClient()->postJson('cgi-bin/message/send', [
                 'msgtype' => 'text',
                 'touser' => $open_id,
                 'agentid' => config('easywechat.work.default.agent_id'),
