@@ -9,9 +9,6 @@
             "email": "sinceow@163.com"
         }
     ],
-    "require": {
-        "overtrue/laravel-wechat": "^7.2"
-    },
     "extra": {
         "laravel": {
             "providers": [],
