@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\WeChat\Database\Seeders;
+namespace Modules\Wechat\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class WeChatDatabaseSeeder extends Seeder
+class WechatDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

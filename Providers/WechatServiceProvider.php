@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\WeChat\Providers;
+namespace Modules\Wechat\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
-class WeChatServiceProvider extends ServiceProvider
+class WechatServiceProvider extends ServiceProvider
 {
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'WeChat';
+    protected $moduleName = 'Wechat';
 
     /**
      * @var string $moduleNameLower

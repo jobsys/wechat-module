@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\WeChat\Enums;
+namespace Modules\Wechat\Enums;
 
-enum WeChatSns: string
+enum WechatSns: string
 {
 
     case Work = 'work'; //企业微信

@@ -24,7 +24,7 @@ composer require jobsys/wechat-module
 #### 模块配置 `config/module.php`
 
 ```php
-"WeChat" => [
+"Wechat" => [
      "route_prefix" => "manager",                                                   // 路由前缀
  ]
 ```

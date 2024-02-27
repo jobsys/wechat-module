@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\WeChat\Http\Controllers;
+namespace Modules\Wechat\Http\Controllers;
 
 
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Modules\WeChat\Services\WeChatService;
+use Modules\Wechat\Services\WechatService;
 
-class WeChatController extends Controller
+class WechatController extends Controller
 {
 
-    public function serve(WeChatService $service)
+    public function serve(WechatService $service)
     {
         Log::info('wechat request arrived.');
 
@@ -25,7 +25,7 @@ class WeChatController extends Controller
         return $server->serve();
     }
 
-    public function workRedirect(WeChatService $service)
+    public function workRedirect(WechatService $service)
     {
         Log::info('wechat work redirect.');
         $redirect_url = $service->workApp()->getOAuth()->redirect(route('wechat.work.login'));

@@ -10,6 +10,3 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::any('/wechat', 'WeChatController@serve')->name('wechat.serve');
-Route::any('/wechat/work/redirect', 'WeChatController@workRedirect')->name('wechat.work.redirect');

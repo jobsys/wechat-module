@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\WeChat\Services;
+namespace Modules\Wechat\Services;
 
 use EasyWeChat\Kernel\Exceptions\BadResponseException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
@@ -16,7 +16,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class WeChatService extends BaseService
+class WechatService extends BaseService
 {
     /**
      * @return \EasyWeChat\OfficialAccount\Application
