@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\WeChat\Services;
+namespace Modules\Wechat\Services;
 
 use EasyWeChat\Kernel\Exceptions\BadResponseException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;

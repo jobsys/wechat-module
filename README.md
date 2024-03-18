@@ -1,4 +1,4 @@
-**WeChat** 微信模块
+**Wechat** 微信模块
 
 该模块是在 [overtrue/laravel-wechat](https://github.com/overtrue/laravel-wechat) 库的基础上进行了封装，提供微信公众号（待开发）、微信小程序、微信企业号、微信支付的开箱即用功能。
 
