@@ -379,8 +379,31 @@ class WechatService extends BaseService
 		}
 	}
 
+    /**
+     * 创建公众号菜单
+     * @param array $menus
+     * @return bool
+     */
+    public function officialCreateMenus(array $menus): bool
+    {
 
-	/**
+        if (!isset($menus['button'])) {
+            $menus = ['button' => $menus];
+        }
+
+        $response = $this->officialApp()->getClient()->postJson('cgi-bin/menu/create', $menus);
+
+        $response = $response->toArray();
+        if ($response['errcode'] == '0' && $response['errmsg'] == 'ok') {
+            return true;
+        } else {
+            Log::info(json_encode($response));
+            return false;
+        }
+    }
+
+
+    /**
 	 * 发送企业微信通用消息。
 	 *
 	 * @param $open_id
